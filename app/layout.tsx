@@ -42,18 +42,39 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <header className="border-b border-border sticky top-0 bg-background/80 backdrop-blur-md z-50">
-          <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-            <Link href="/" className="text-lg font-bold tracking-tight">
-              Blog<span className="text-accent">System</span>
+      <body className="min-h-full flex flex-col bg-white text-foreground">
+        {/* Navigation */}
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border">
+          <nav className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent text-white font-bold text-base tracking-tight">
+                B
+              </span>
+              <span className="text-xl font-bold tracking-tight text-heading">
+                Blog<span className="text-accent">System</span>
+              </span>
             </Link>
-            <div className="flex gap-6 text-sm">
-              <Link href="/" className="text-muted hover:text-foreground transition-colors">
-                Home
-              </Link>
-              <Link href="/blog" className="text-muted hover:text-foreground transition-colors">
-                Blog
+
+            <div className="flex items-center gap-8">
+              <div className="hidden sm:flex items-center gap-8 text-[15px] font-medium">
+                <Link
+                  href="/"
+                  className="text-muted hover:text-heading transition-colors duration-200"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/blog"
+                  className="text-muted hover:text-heading transition-colors duration-200"
+                >
+                  Blogs
+                </Link>
+              </div>
+              <Link
+                href="/blog"
+                className="px-5 py-2.5 rounded-full bg-accent text-white text-sm font-semibold hover:bg-accent-dark transition-colors duration-200"
+              >
+                Start Reading
               </Link>
             </div>
           </nav>
@@ -61,9 +82,55 @@ export default function RootLayout({
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-border mt-auto">
-          <div className="max-w-5xl mx-auto px-4 py-8 text-center text-sm text-muted">
-            &copy; {new Date().getFullYear()} BlogSystem. Built with Next.js &amp; AI.
+        {/* Footer */}
+        <footer className="bg-surface border-t border-border">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {/* Brand */}
+              <div>
+                <Link href="/" className="flex items-center gap-2.5">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent text-white font-bold text-sm">
+                    B
+                  </span>
+                  <span className="text-lg font-bold tracking-tight text-heading">
+                    Blog<span className="text-accent">System</span>
+                  </span>
+                </Link>
+                <p className="mt-4 text-sm text-muted leading-relaxed max-w-xs">
+                  Expert financial insights and guides powered by AI. Helping you make smarter decisions.
+                </p>
+              </div>
+
+              {/* Quick links */}
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-widest text-muted mb-4">
+                  Quick Links
+                </h4>
+                <div className="flex flex-col gap-3 text-sm">
+                  <Link href="/" className="text-foreground/70 hover:text-accent transition-colors">
+                    Home
+                  </Link>
+                  <Link href="/blog" className="text-foreground/70 hover:text-accent transition-colors">
+                    All Articles
+                  </Link>
+                </div>
+              </div>
+
+              {/* Info */}
+              <div>
+                <h4 className="text-xs font-semibold uppercase tracking-widest text-muted mb-4">
+                  About
+                </h4>
+                <p className="text-sm text-foreground/70 leading-relaxed">
+                  AI-powered financial blog delivering expert analysis, market insights, and actionable guides.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-14 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
+              <p>&copy; {new Date().getFullYear()} BlogSystem. All rights reserved.</p>
+              <p className="text-xs">Built with Next.js &amp; AI</p>
+            </div>
           </div>
         </footer>
       </body>

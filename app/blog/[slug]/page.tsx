@@ -13,7 +13,6 @@ const getPost = unstable_cache(
 
 type Params = Promise<{ slug: string }>;
 
-// Dynamic SEO metadata for each blog post
 export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const post = await getPost(slug);
@@ -33,6 +32,11 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
+function readingTime(content: string) {
+  const words = content.split(/\s+/).length;
+  return `${Math.max(1, Math.round(words / 200))} min read`;
+}
+
 export default async function BlogPostPage({ params }: { params: Params }) {
   const { slug } = await params;
   const post = await getPost(slug);
@@ -41,7 +45,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     notFound();
   }
 
-  // JSON-LD structured data for Google rich results + AI engines
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -49,70 +52,86 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     description: post.excerpt || post.content.slice(0, 155),
     datePublished: new Date(post.createdAt).toISOString(),
     dateModified: new Date(post.updatedAt).toISOString(),
-    author: {
-      "@type": "Organization",
-      name: "BlogSystem",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "BlogSystem",
-    },
+    author: { "@type": "Organization", name: "BlogSystem" },
+    publisher: { "@type": "Organization", name: "BlogSystem" },
   };
 
-  // Split content into blocks (headings + paragraphs)
   const blocks = post.content
     .split(/\n\n+/)
     .filter((b: string) => b.trim());
 
   return (
-    <section className="max-w-3xl mx-auto px-4 py-16">
-      {/* JSON-LD for SEO + GEO (AI engines like ChatGPT read this) */}
+    <div className="bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <Link
-        href="/blog"
-        className="inline-flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors"
-      >
-        &larr; Back to blog
-      </Link>
+      {/* Article header */}
+      <div className="bg-surface border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-10 pb-14 lg:pt-14 lg:pb-20">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent font-medium transition-colors duration-200 group mb-10"
+          >
+            <svg
+              className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+            </svg>
+            Back to all articles
+          </Link>
 
-      <article className="mt-8">
-        <time className="text-sm text-muted">
-          {new Date(post.createdAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </time>
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted mb-5">
+              <time>
+                {new Date(post.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+              <span className="w-1 h-1 rounded-full bg-muted/40" />
+              <span>{readingTime(post.content)}</span>
+            </div>
 
-        {/* H1 — primary SEO signal */}
-        <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
-          {post.title}
-        </h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] text-heading">
+              {post.title}
+            </h1>
 
-        {/* Intro answer — optimized for featured snippets (AEO) */}
-        {post.excerpt && (
-          <p className="mt-4 text-lg text-muted leading-relaxed">
-            {post.excerpt}
-          </p>
-        )}
+            {post.excerpt && (
+              <p className="mt-6 text-lg sm:text-xl text-muted leading-relaxed">
+                {post.excerpt}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
-        <hr className="my-8 border-border" />
-
-        {/* Structured content with semantic paragraphs */}
-        <div className="space-y-6 text-base leading-relaxed">
+      {/* Article body */}
+      <article className="max-w-3xl mx-auto px-6 lg:px-8 py-14 lg:py-20">
+        <div className="space-y-6 text-[17px] leading-[1.85] text-foreground/80">
           {blocks.map((block: string, i: number) =>
             block.startsWith("## ") ? (
-              <h2 key={i} className="text-2xl font-bold mt-10 mb-2">
+              <h2
+                key={i}
+                className="text-2xl sm:text-3xl font-extrabold mt-14 mb-3 text-heading"
+              >
                 {block.replace("## ", "")}
               </h2>
             ) : block.startsWith("Q: ") ? (
-              <div key={i} className="bg-card border border-border rounded-lg p-4">
-                <p className="font-semibold">{block.split("\n")[0]}</p>
-                <p className="mt-2 text-muted">
+              <div
+                key={i}
+                className="bg-surface border-l-4 border-accent rounded-r-xl p-6 my-10"
+              >
+                <p className="font-bold text-heading text-base">
+                  {block.split("\n")[0]}
+                </p>
+                <p className="mt-3 text-muted leading-relaxed text-[15px]">
                   {block.split("\n").slice(1).join(" ").replace(/^A:\s*/, "")}
                 </p>
               </div>
@@ -121,7 +140,26 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             )
           )}
         </div>
+
+        {/* Bottom navigation */}
+        <div className="mt-20 pt-8 border-t border-border">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-accent font-semibold text-sm hover:gap-3 transition-all duration-200 group"
+          >
+            <svg
+              className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+            </svg>
+            All articles
+          </Link>
+        </div>
       </article>
-    </section>
+    </div>
   );
 }
