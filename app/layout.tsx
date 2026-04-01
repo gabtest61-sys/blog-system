@@ -14,8 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BlogSystem",
-  description: "AI-powered blog platform",
+  title: {
+    default: "BlogSystem — AI-Powered Blog Platform",
+    template: "%s | BlogSystem",
+  },
+  description:
+    "AI-powered blog platform delivering expert insights, guides, and articles optimized for search engines and AI assistants.",
+  metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
+  openGraph: {
+    type: "website",
+    siteName: "BlogSystem",
+    locale: "en_US",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

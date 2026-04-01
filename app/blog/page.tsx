@@ -1,11 +1,38 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
+type Post = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Read the latest articles, guides, and insights on our AI-powered blog.",
+};
+
+const getPosts = unstable_cache(
+  async (): Promise<Post[]> => {
+    return prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+    });
+  },
+  ["blog-posts"],
+  { revalidate: 60 } // refresh cache every 60 seconds
+);
+
 export default async function BlogListPage() {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const posts = (await getPosts()) as Post[];
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-16">
@@ -18,7 +45,7 @@ export default async function BlogListPage() {
         <p className="text-muted">No posts yet. Check back soon!</p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2">
-          {posts.map((post) => (
+          {posts.map((post: Post) => (
             <Link
               key={post.id}
               href={`/blog/${post.slug}`}

@@ -15,20 +15,24 @@ export async function POST(request: NextRequest) {
 
     // Step 1: Ask OpenAI to generate blog content
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
+      max_tokens: 800,
+      temperature: 0.7,
       messages: [
         {
           role: "system",
-          content: `You are an expert blog writer. Generate a blog post in JSON format with these exact fields:
-- "title": A compelling, SEO-friendly title
-- "excerpt": A 1-2 sentence summary (max 160 characters)
-- "content": The full blog post in plain text with clear sections
-
-Write in a professional but approachable tone. Make the content informative and engaging.`,
+          content: `You are an SEO blog writer. Return JSON with these string fields:
+- "title": SEO-friendly title (under 60 chars)
+- "excerpt": one sentence summary (under 150 chars)
+- "content": a single string with this structure:
+  1. Opening paragraph that directly answers the topic (for featured snippets)
+  2. 2-3 sections, each starting with a line like "## Section Title"
+  3. End with "## FAQ" section with 2-3 Q&A pairs formatted as "Q: ... A: ..."
+Keep it concise. All fields must be strings, not arrays.`,
         },
         {
           role: "user",
-          content: `Write a blog post about: ${body.topic}`,
+          content: `Blog post about: ${body.topic}`,
         },
       ],
       response_format: { type: "json_object" },
@@ -45,6 +49,11 @@ Write in a professional but approachable tone. Make the content informative and 
       );
     }
 
+    // Ensure content is a single string (AI sometimes returns an array)
+    const content = Array.isArray(generated.content)
+      ? generated.content.join("\n\n")
+      : generated.content;
+
     // Step 2: Create a slug from the title
     const slug = generated.title
       .toLowerCase()
@@ -57,7 +66,7 @@ Write in a professional but approachable tone. Make the content informative and 
         title: generated.title,
         slug,
         excerpt: generated.excerpt || null,
-        content: generated.content,
+        content,
         published: body.published ?? true,
       },
     });
