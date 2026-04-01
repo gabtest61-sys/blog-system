@@ -1,4 +1,5 @@
-import { PrismaClient } from '.prisma/client'
+// @ts-ignore - Prisma 7 type export issue, works at runtime
+import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 
 const globalForPrisma = globalThis as unknown as {
