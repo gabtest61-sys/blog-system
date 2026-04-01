@@ -9,7 +9,7 @@ export default async function sitemap() {
     orderBy: { updatedAt: "desc" },
   });
 
-  const blogPages = posts.map((post) => ({
+  const blogPages = posts.map((post: { slug: string; updatedAt: Date }) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
     lastModified: post.updatedAt,
   }));
