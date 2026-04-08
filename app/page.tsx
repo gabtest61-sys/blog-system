@@ -74,21 +74,21 @@ export default function Home() {
             {[
               {
                 title: "AI-Powered Analysis",
-                desc: "Every article is crafted using advanced AI, ensuring accurate, comprehensive, and up-to-date financial insights.",
+                desc: "Every article uses AI-assisted research to deliver clear, relevant financial insights on saving, investing, markets, and long-term wealth building.",
                 icon: (
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                 ),
               },
               {
                 title: "SEO & AEO Ready",
-                desc: "Structured for search engines and AI assistants. Every post is optimized for maximum discoverability.",
+                desc: "Each post is built around finance-focused topics and optimized for search engines and AI assistants, making money guidance easier to discover.",
                 icon: (
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
                 ),
               },
               {
                 title: "Actionable Guides",
-                desc: "Not just theory — practical, step-by-step guides you can apply to your personal finances today.",
+                desc: "More than theory, every post includes practical financial guidance you can apply to budgeting, debt reduction, investing, and future planning.",
                 icon: (
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                 ),

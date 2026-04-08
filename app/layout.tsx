@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | BlogSystem",
   },
   description:
-    "AI-powered blog platform delivering expert insights, guides, and articles optimized for search engines and AI assistants.",
+    "Financial blog platform delivering expert insights, guides, and articles optimized for search engines and AI assistants.",
   metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
   openGraph: {
     type: "website",
@@ -127,10 +127,7 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="mt-14 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted">
-              <p>&copy; {new Date().getFullYear()} BlogSystem. All rights reserved.</p>
-              <p className="text-xs">Built with Next.js &amp; AI</p>
-            </div>
+            
           </div>
         </footer>
       </body>

@@ -17,7 +17,7 @@ type Post = {
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Read the latest articles, guides, and insights on our AI-powered blog.",
+    "Read the latest articles, guides, and insights on our AI-powered financial blog.",
 };
 
 const getPosts = unstable_cache(
