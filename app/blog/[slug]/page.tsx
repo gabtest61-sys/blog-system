@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Params }) {
   const { slug } = await params;
   const post = await getPost(slug);
 
-  if (!post) return { title: "Post Not Found" };
+  if (!post) return { title: "Financial Article Not Found" };
 
   return {
     title: post.title,
@@ -52,8 +52,8 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     description: post.excerpt || post.content.slice(0, 155),
     datePublished: new Date(post.createdAt).toISOString(),
     dateModified: new Date(post.updatedAt).toISOString(),
-    author: { "@type": "Organization", name: "BlogSystem" },
-    publisher: { "@type": "Organization", name: "BlogSystem" },
+    author: { "@type": "Organization", name: "BlogSystem Finance" },
+    publisher: { "@type": "Organization", name: "BlogSystem Finance" },
   };
 
   const blocks = post.content
@@ -67,7 +67,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Article header */}
+      {/* Financial article header */}
       <div className="bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-10 pb-14 lg:pt-14 lg:pb-20">
           <Link
@@ -83,10 +83,15 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
             </svg>
-            Back to all articles
+            Back to financial insights
           </Link>
 
           <div className="max-w-3xl">
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-accent mb-5">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              Financial Insight
+            </span>
+
             <div className="flex flex-wrap items-center gap-3 text-sm text-muted mb-5">
               <time>
                 {new Date(post.createdAt).toLocaleDateString("en-US", {
@@ -112,7 +117,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      {/* Article body */}
+      {/* Financial article body */}
       <article className="max-w-3xl mx-auto px-6 lg:px-8 py-14 lg:py-20">
         <div className="space-y-6 text-[17px] leading-[1.85] text-foreground/80">
           {blocks.map((block: string, i: number) =>
@@ -156,7 +161,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
             </svg>
-            All articles
+            All financial articles
           </Link>
         </div>
       </article>
