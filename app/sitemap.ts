@@ -4,6 +4,7 @@ const SITE_URL =
   process.env.SITE_URL && !process.env.SITE_URL.includes("localhost")
     ? process.env.SITE_URL
     : "https://www.tipforfunds.com";
+
 export default async function sitemap() {
   const posts = await prisma.post.findMany({
     where: { published: true },
