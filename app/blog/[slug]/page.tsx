@@ -56,10 +56,6 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     publisher: { "@type": "Organization", name: "BlogSystem Finance" },
   };
 
-  const blocks = post.content
-    .split(/\n\n+/)
-    .filter((b: string) => b.trim());
-
   return (
     <div className="bg-white">
       <script
@@ -67,7 +63,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Financial article header */}
+      {/* Article header */}
       <div className="bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-10 pb-14 lg:pt-14 lg:pb-20">
           <Link
@@ -117,34 +113,106 @@ export default async function BlogPostPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      {/* Financial article body */}
+      {/* Article body */}
       <article className="max-w-3xl mx-auto px-6 lg:px-8 py-14 lg:py-20">
-        <div className="space-y-6 text-[17px] leading-[1.85] text-foreground/80">
-          {blocks.map((block: string, i: number) =>
-            block.startsWith("## ") ? (
-              <h2
-                key={i}
-                className="text-2xl sm:text-3xl font-extrabold mt-14 mb-3 text-heading"
-              >
-                {block.replace("## ", "")}
-              </h2>
-            ) : block.startsWith("Q: ") ? (
-              <div
-                key={i}
-                className="bg-surface border-l-4 border-accent rounded-r-xl p-6 my-10"
-              >
-                <p className="font-bold text-heading text-base">
-                  {block.split("\n")[0]}
-                </p>
-                <p className="mt-3 text-muted leading-relaxed text-[15px]">
-                  {block.split("\n").slice(1).join(" ").replace(/^A:\s*/, "")}
-                </p>
-              </div>
-            ) : (
-              <p key={i}>{block}</p>
-            )
-          )}
-        </div>
+        <div
+          className="
+            prose prose-lg max-w-none
+            text-foreground/80
+            prose-headings:font-extrabold
+            prose-headings:tracking-tight
+            prose-headings:text-heading
+            prose-h2:text-2xl
+            prose-h2:sm:text-3xl
+            prose-h2:mt-14
+            prose-h2:mb-4
+            prose-h3:text-xl
+            prose-h3:mt-10
+            prose-h3:mb-3
+            prose-p:text-[17px]
+            prose-p:leading-[1.85]
+            prose-p:text-foreground/80
+            prose-a:text-accent
+            prose-a:font-semibold
+            prose-a:no-underline
+            hover:prose-a:underline
+            prose-strong:text-heading
+            prose-strong:font-bold
+            prose-ul:my-6
+            prose-ul:space-y-2
+            prose-li:text-[17px]
+            prose-li:leading-[1.85]
+            prose-li:text-foreground/80
+            prose-img:rounded-xl
+            prose-img:border
+            prose-img:border-border
+            prose-img:my-10
+            prose-img:w-full
+            prose-img:shadow-sm
+            prose-blockquote:border-l-accent
+            prose-blockquote:bg-surface
+            prose-blockquote:rounded-r-xl
+            prose-blockquote:py-1
+            prose-blockquote:px-6
+            prose-code:text-accent
+            prose-code:bg-surface
+            prose-code:rounded
+            prose-code:px-1
+          "
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+
+        {/* Disclaimer styling */}
+        <style>{`
+          .disclaimer {
+            margin-top: 2rem;
+            padding: 1rem 1.25rem;
+            background: #f7f8fc;
+            border-left: 4px solid #e5e7eb;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.6;
+          }
+          .toc-block {
+            background: #f0f4ff;
+            border: 1px solid #c5d3f0;
+            border-left: 4px solid var(--color-accent, #f97316);
+            border-radius: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+          }
+          .toc-block h2 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin: 0 0 0.75rem 0;
+            border: none;
+            padding: 0;
+          }
+          .toc-block nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+          .toc-block nav ul li {
+            font-size: 0.9rem;
+            counter-increment: toc;
+          }
+          .toc-block nav ul li a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+          }
+          .toc-block nav ul li a:hover {
+            color: var(--color-accent, #f97316);
+          }
+        `}</style>
 
         {/* Bottom navigation */}
         <div className="mt-20 pt-8 border-t border-border">
